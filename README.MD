@@ -67,11 +67,12 @@ docker run -p 8080:8080 puml-assistant
 
 ## 贡献
 
-欢迎贡献！请 fork 这个仓库并提交 PR。
+欢迎贡献！请 fork 这个仓库并提交 PR。   
+[贡献指南](CONTRIBUTING.MD)。
 
 ## 许可证
 
-这个项目使用 [MIT 许可证](LICENSE)。
+这个项目使用 [许可证](LICENSE)。
 
 
 说明
