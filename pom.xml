@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<plantuml.version>1.2024.6</plantuml.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -39,6 +40,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sourceforge.plantuml</groupId>
+			<artifactId>plantuml</artifactId>
+			<version>${plantuml.version}</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
