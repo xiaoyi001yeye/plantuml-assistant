@@ -1,0 +1,15 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NPMRC_ENV: home
+    ports:
+      - "8080:8080"
+    networks:
+      - frontend-network
+
+networks:
+  frontend-network:
+    driver: bridge
