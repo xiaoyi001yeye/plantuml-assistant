@@ -2,8 +2,8 @@ FROM node:20-alpine AS frontend-build
 WORKDIR /app
 COPY frontend .
 ARG NPMRC_ENV=home
-COPY .npmrc.${NPMRC_ENV} .npmrc
-RUN npm install
+COPY frontend/.npmrc.${NPMRC_ENV} .npmrc
+RUN set -x && npm install
 RUN npm run build
 
 FROM maven:3.8.4-openjdk-17 AS build
