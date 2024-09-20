@@ -1,17 +1,20 @@
-# 使用 Maven 官方镜像作为构建阶段
-FROM maven:3.8.4-openjdk-17 AS build
-
-# 设置工作目录
+FROM node:20-alpine AS frontend-build
 WORKDIR /app
+COPY frontend .
+ARG NPMRC_ENV=home
+COPY frontend/.npmrc.${NPMRC_ENV} .npmrc
+RUN set -x && npm install
+RUN npm run build
 
-# 将项目的 pom.xml 和 src 目录复制到工作目录
+FROM maven:3.8.4-openjdk-17 AS build
+WORKDIR /app
 COPY pom.xml .
 COPY src ./src
+COPY settings.xml /app/settings.xml
+COPY --from=frontend-build /app/dist ./src/main/resources/static
+RUN mvn -s settings.xml clean package -DskipTests
 
-# 使用 Maven 编译项目
-RUN mvn clean package -DskipTests
 
-# 使用 Alpine Linux 3.20 作为基础镜像
 FROM alpine:3.20
 
 # 设置环境变量，用于国内加速
