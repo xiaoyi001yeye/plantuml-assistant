@@ -1,20 +1,16 @@
 <template>
   <div id="app">
-    <PumlAssistant />
+    <PUMLAssistant />
   </div>
 </template>
 
 <script>
-import PumlAssistant from './components/PumlAssistant.vue';
+import PUMLAssistant from './components/PumlAssistant.vue';
 
 export default {
   name: 'App',
   components: {
-    PumlAssistant
+    PUMLAssistant
   }
-};
+}
 </script>
-
-<style>
-/* 可以在这里添加一些全局样式 */
-</style>
