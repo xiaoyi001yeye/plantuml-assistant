@@ -1,9 +1,9 @@
-FROM node:14 AS frontend-build
+FROM node:20-alpine AS frontend-build
 WORKDIR /app
-COPY package*.json ./
-RUN npm config set registry https://registry.npmmirror.com
-RUN npm install
 COPY frontend .
+ARG NPMRC_ENV=home
+COPY .npmrc.${NPMRC_ENV} .npmrc
+RUN npm install
 RUN npm run build
 
 FROM maven:3.8.4-openjdk-17 AS build
@@ -11,7 +11,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 COPY settings.xml /app/settings.xml
-COPY --from=frontend-build /app/build ./src/main/resources/static
+COPY --from=frontend-build /app/dist ./src/main/resources/static
 RUN mvn -s settings.xml clean package -DskipTests
 
 

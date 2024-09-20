@@ -4,6 +4,8 @@ WORKDIR /app
 # COPY frontend/vue.config.js ./
 # COPY frontend/.npmrc ./
 COPY frontend .
+ARG NPMRC_ENV=home
+COPY .npmrc.${NPMRC_ENV} .npmrc
 RUN npm install
 RUN npm run build
 
