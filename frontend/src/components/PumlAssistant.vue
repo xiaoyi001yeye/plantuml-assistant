@@ -2,8 +2,10 @@
   <div class="container">
     <div class="input-area">
       <h2>Enter PUML Syntax</h2>
-      <textarea v-model="diagram" required></textarea>
-      <button @click="generateDiagram">Generate</button>
+      <form @submit.prevent="generateDiagram">
+        <textarea v-model="diagram" required></textarea>
+        <button type="submit">Generate</button>
+      </form>
     </div>
     <div class="preview-area">
       <h2>Preview</h2>
@@ -12,34 +14,52 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      diagram: '',
-      previewSrc: 'about:blank'
-    };
-  },
-  methods: {
-    generateDiagram() {
-      this.previewSrc = `/generate?diagram=${encodeURIComponent(this.diagram)}`;
-    },
-    handleLoad(event) {
-      const iframe = event.target;
-      const fullscreenDiv = this.$refs.fullscreenPreview;
-      iframe.contentDocument.body.onclick = () => {
-        const img = iframe.contentDocument.body.querySelector('img');
-        if (img) {
-          fullscreenDiv.querySelector('img').src = img.src;
-          fullscreenDiv.style.display = 'flex';
-        }
-      };
-    }
+<script setup>
+import { ref } from 'vue';
+
+const diagram = ref('');
+const previewSrc = ref('about:blank');
+
+const generateDiagram = async () => {
+  try {
+    const response = await fetch(`/generate?diagram=${encodeURIComponent(diagram.value)}`);
+    const data = await response.text();
+    previewSrc.value = `data:text/html;charset=utf-8,${encodeURIComponent(`<pre>${data}</pre>`)}`;
+  } catch (error) {
+    console.error('Error generating diagram:', error);
   }
+};
+
+const handleLoad = (event) => {
+  const iframe = event.target;
+  iframe.contentDocument.body.onclick = () => {
+    const img = iframe.contentDocument.body.querySelector('img');
+    if (img) {
+      const fullscreenDiv = document.getElementById('fullscreenPreview');
+      fullscreenDiv.querySelector('img').src = img.src;
+      fullscreenDiv.style.display = 'flex';
+    }
+  };
 };
 </script>
 
-<style>
-/* 将CSS样式放在这里 */
-/* ... */
+<style scoped>
+.container {
+  display: flex;
+  width: 80%;
+  margin-top: 20px;
+}
+.input-area, .preview-area {
+  flex: 1;
+  margin: 10px;
+}
+textarea {
+  width: 100%;
+  height: 300px;
+}
+iframe {
+  width: 100%;
+  height: 300px;
+  border: 1px solid #ccc;
+}
 </style>

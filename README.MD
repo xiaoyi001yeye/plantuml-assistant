@@ -35,14 +35,24 @@ cd puml-assistant
 
 ### 使用 Docker 运行
 
-#### 构建 Docker 镜像
+#### 构建 Docker-Compose 镜像
 ```
-docker build -t puml-assistant .
+docker compose build
 ```
 
-#### 运行 Docker 容器
+#### 启动服务
 ```
-docker run -p 8080:8080 puml-assistant
+docker compose up -d
+```
+
+#### 停止服务
+```
+docker compose down
+```
+
+#### 查看日志
+```
+docker compose logs <service>
 ```
 
 
