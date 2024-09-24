@@ -35,7 +35,7 @@ jobs:
           tar -czf frontend-build.tar.gz dist
           
       - name: Upload frontend build to artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: frontend-build
           path: frontend/frontend-build.tar.gz
