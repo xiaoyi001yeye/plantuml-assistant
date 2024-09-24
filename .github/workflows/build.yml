@@ -1,0 +1,41 @@
+name: Build and Package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: |
+          cp .npmrc.home .npmrc
+          npm install
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+        
+      - name: Compress frontend build
+        run: |
+          cd frontend
+          tar -czf frontend-build.tar.gz dist
+          
+      - name: Upload frontend build to artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend-build
+          path: frontend/frontend-build.tar.gz
